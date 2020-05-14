@@ -1,0 +1,1 @@
+<?php header( 'Location: /DrawingBoard/index.html' ) ;  ?>
