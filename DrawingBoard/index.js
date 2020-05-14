@@ -25,10 +25,6 @@ let container,
     markerToolY,
     markerToolWidth,
     markerToolHeight,
-<<<<<<< HEAD
-
-=======
->>>>>>> 782923b4359cd4de4b68eb68a0b64252a3d5c1e2
     toolsStrokeStyle = 'grey',
     pointSize = 'normal',
     pointColor = 'black',
@@ -42,17 +38,10 @@ let pointX = [],
     isPaint = false;
 
 const penSize = {small: 2, normal: 5, medium: 8, big: 10, large: 12},
-<<<<<<< HEAD
       colors = {red:'#ff0000', pink: '#FF1493', orange:'#FFA500', 
                 yellow:'#FFFF00', green:'#008000', blue:'#0000FF',
                 purple:'#800080', brown: '#A52A2A', indigo:'#4B0082', 
-                violet:'#EE82EE',  gray:'#696969'};
-=======
-      colors = {red:'#ff4040', orange:'#407294', yellow:'#ffd700', 
-                green:'#37c8ae', blue:'#b72d5b', indigo:'#4837bc', 
-                violet:'#777777', purple:'#c2cc3b', grey:'#ff00ff', 
-                skyblue:'#ff7373', wine:'#133337'};
->>>>>>> 782923b4359cd4de4b68eb68a0b64252a3d5c1e2
+                violet:'#EE82EE',  gray:'#696969', black: '#000000'};
 
 // To reset the canvas
 function clearCanvas() {
@@ -104,11 +93,7 @@ function drawingTools(){
         arcY = colorPalleteY + colorPalleteHeight/2,
         arcRadius = colorPalleteHeight/6;
     for(let key of Object.keys(colors)){  
-<<<<<<< HEAD
-      arcX += colorPalleteWidth/12;
-=======
-      arcX += colorPalleteWidth/11;
->>>>>>> 782923b4359cd4de4b68eb68a0b64252a3d5c1e2
+      arcX += colorPalleteWidth/13;
       grad = colorGradient(arcX, arcY, arcRadius, colors[key]);
       drawArc(arcX, arcY, arcRadius, grad, context, true);
     }
@@ -155,12 +140,7 @@ function drawingTools(){
     context.lineTo(eraserPickerX, eraserPickerY + eraserPickerHeight*.7);
     context.lineTo(eraserPickerX, eraserPickerY + eraserPickerHeight*.45);
     context.lineTo(eraserPickerX + eraserPickerWidth*.9, eraserPickerY + eraserPickerHeight*.45);
-<<<<<<< HEAD
     context.strokeStyle = pointTool === 'eraser'? 'black' : toolsStrokeStyle;
-=======
-    // context.closePath();
-    context.strokeStyle = toolsStrokeStyle;
->>>>>>> 782923b4359cd4de4b68eb68a0b64252a3d5c1e2
     context.lineWidth = 2;
     context.stroke();
   },
@@ -170,13 +150,8 @@ function drawingTools(){
     markerToolY = drawingAreaY;
     markerToolWidth = (canvasWidth - markerToolX) * .55;
     markerToolHeight = drawingAreaHeight/3;
-<<<<<<< HEAD
     context.beginPath();
     context.strokeStyle = pointTool === 'marker'? 'black' : toolsStrokeStyle;
-=======
-    // context.beginPath();
-    context.strokeStyle = toolsStrokeStyle;
->>>>>>> 782923b4359cd4de4b68eb68a0b64252a3d5c1e2
     context.strokeRect(markerToolX*1.01, markerToolY + markerToolHeight*.5, markerToolWidth *.7, markerToolHeight * .5)
     context.beginPath();
     context.moveTo(markerToolX*1.01, markerToolY + markerToolHeight*.5);
@@ -186,11 +161,7 @@ function drawingTools(){
     context.lineTo(markerToolX*1.01 + markerToolWidth*.7, markerToolY + markerToolHeight*.3);
     context.lineTo(markerToolX*1.01 + markerToolWidth*.7, markerToolY + markerToolHeight*.5);
     context.closePath()
-<<<<<<< HEAD
     context.fillStyle = pointTool === 'marker'? 'black' : toolsStrokeStyle;
-=======
-    context.fillStyle = toolsStrokeStyle;
->>>>>>> 782923b4359cd4de4b68eb68a0b64252a3d5c1e2
     context.fill()
   }
 
@@ -201,7 +172,6 @@ function drawingTools(){
 }
 // Create the only area drawing is allowed 
 function prepareDrawingArea() {  
-<<<<<<< HEAD
 
   // Draw the Marker and Eraser for the left side of the drawing board
   let selected,
@@ -252,15 +222,12 @@ function prepareDrawingArea() {
         context.closePath();
         context.stroke();
       };
-=======
->>>>>>> 782923b4359cd4de4b68eb68a0b64252a3d5c1e2
   // Layout co-ordinates
   drawingAreaX = canvasWidth*.1;
   drawingAreaY = canvasHeight*.1;
   drawingAreaWidth = canvasWidth*.75;
   drawingAreaHeight = canvasHeight*.8;
   drawingTools();
-<<<<<<< HEAD
   if(pointTool === 'marker'){ 
     drawMarker();
   } else {    
@@ -294,11 +261,6 @@ function prepareDrawingArea() {
   // Print the DrawArea
   context.save();
   context.beginPath();
-=======
-  // Print the DrawArea
-  context.save();
-  context.beginPath();
->>>>>>> 782923b4359cd4de4b68eb68a0b64252a3d5c1e2
   context.strokeStyle = '#ffffff';
   context.shadowOffsetX = 2;
   context.shadowOffsetY = -1;
@@ -307,10 +269,7 @@ function prepareDrawingArea() {
   context.lineWidth = 1;
   context.fillStyle = '#ffffff'
   context.rect(drawingAreaX, drawingAreaY, drawingAreaWidth, drawingAreaHeight);  
-<<<<<<< HEAD
   // context.closePath();
-=======
->>>>>>> 782923b4359cd4de4b68eb68a0b64252a3d5c1e2
   context.stroke();
   context.fill();
   context.clip();
@@ -350,7 +309,6 @@ function draw() {
     }
     context.lineTo(pointX[i], pointY[i]);
     context.strokeStyle = pointColors[i];
-<<<<<<< HEAD
     context.shadowColor = pointColors[i];
     context.lineCap = 'round';
     context.lineJoin = 'round';
@@ -358,15 +316,6 @@ function draw() {
     context.stroke();   
   }
   context.closePath(); 
-=======
-    context.shadowColor = 'white';
-    context.lineCap = 'round';
-    context.lineJoin = 'round';
-    context.lineWidth = pointSizes;
-    context.stroke();    
-  }
-  context.closePath();
->>>>>>> 782923b4359cd4de4b68eb68a0b64252a3d5c1e2
 
   context.restore();
 }
@@ -376,11 +325,11 @@ function update(){
   // Collect the new client width set new value for the point
   for(let i = 0; i < pointX.length; i++){    
     pointX[i] = pointX[i]*container.clientWidth/canvasWidth;
-    pointY[i] = pointY[i]*(container.clientWidth*.7)/canvasHeight;
+    pointY[i] = pointY[i]*(container.clientWidth*.5)/canvasHeight;
   }
   padding.left = padding.right = padding.left*container.clientWidth/canvasWidth;
   canvasWidth = container.clientWidth;
-  canvasHeight = canvasWidth*.7;
+  canvasHeight = canvasWidth*.5;
 
   canvas.width = canvasWidth - padding.left - padding.right;
   canvas.height = canvasHeight;
@@ -416,26 +365,16 @@ function  drawingBoardEvents() {
       return (sizeSelectorHeight * size/37)+size;
     };
     if (mouseX < drawingAreaX) { // Left side of the drawing area
-<<<<<<< HEAD
       console.log('nothing to do yet');
-=======
-      console.log('do some magik on the left');
->>>>>>> 782923b4359cd4de4b68eb68a0b64252a3d5c1e2
     } else if (mouseX > drawingAreaX + drawingAreaWidth) { // Right side of the drawing area
 
       if(mouseY > markerToolY && mouseY < markerToolY+markerToolHeight){
         pointTool = 'marker';
-<<<<<<< HEAD
         pointColor = 'black';
         console.log('Marker selected');
       } else if(mouseY > eraserPickerY && mouseY < eraserPickerY + eraserPickerHeight){
         pointTool = 'eraser';
         pointColor = 'white';
-=======
-        console.log('Marker selected');
-      } else if(mouseY > eraserPickerY && mouseY < eraserPickerY + eraserPickerHeight){
-        pointTool = 'eraser';
->>>>>>> 782923b4359cd4de4b68eb68a0b64252a3d5c1e2
         console.log('Eraser selected')
       } else if(mouseY > sizeSelectorY){
         if (mouseY < sizeSelectorY + calcPensizeMidpoint(penSize.small)) {
@@ -452,17 +391,12 @@ function  drawingBoardEvents() {
       }
 
     } else if (mouseY > drawingAreaY + drawingAreaHeight) { // Bottom side of the drawing area
-<<<<<<< HEAD
       if(mouseX > colorPalleteX && pointTool === 'marker'){
-=======
-      if(mouseX > colorPalleteX){
->>>>>>> 782923b4359cd4de4b68eb68a0b64252a3d5c1e2
-        let colorWidth = colorPalleteWidth/11;
+        let colorWidth = colorPalleteWidth/12;
         if (mouseX < colorPalleteX + colorWidth) {
           pointColor = colors.red;
           console.log('first color');
         } else if (mouseX < colorPalleteX + colorWidth*2) {
-<<<<<<< HEAD
           pointColor = colors.pink;
           console.log('second color')
         } else if (mouseX < colorPalleteX + colorWidth*3) {
@@ -492,39 +426,10 @@ function  drawingBoardEvents() {
         } else if (mouseX < colorPalleteX + colorWidth*11) {
           pointColor = colors.gray;
           console.log('eleventh color')
+        } else if (mouseX < colorPalleteX + colorWidth*12) {
+          pointColor = colors.black;
+          console.log('twelveth color')
         } 
-=======
-          pointColor = colors.orange;
-          console.log('second color')
-        } else if (mouseX < colorPalleteX + colorWidth*3) {
-          pointColor = colors.yellow;
-          console.log('third color')
-        } else if (mouseX < colorPalleteX + colorWidth*4) {
-          pointColor = colors.green;
-          console.log('fourth color')
-        } else if (mouseX < colorPalleteX + colorWidth*5) {
-          pointColor = colors.blue;
-          console.log('fifth color')
-        } else if (mouseX < colorPalleteX + colorWidth*6) {
-          pointColor = colors.indigo;
-          console.log('sixth color')
-        } else if (mouseX < colorPalleteX + colorWidth*7) {
-          pointColor = colors.violet;
-          console.log('seventh color')
-        } else if (mouseX < colorPalleteX + colorWidth*8) {
-          pointColor = colors.purple;
-          console.log('eighth color')
-        } else if (mouseX < colorPalleteX + colorWidth*9) {
-          pointColor = colors.grey;
-          console.log('nineth color')
-        } else if (mouseX < colorPalleteX + colorWidth*10) {
-          pointColor = colors.wine;
-          console.log('tenth color')
-        } else if (mouseX < colorPalleteX + colorWidth*11) {
-          pointColor = colors.skyblue;
-          console.log('eleventh color')
-        }
->>>>>>> 782923b4359cd4de4b68eb68a0b64252a3d5c1e2
       }
     }
 
@@ -564,16 +469,12 @@ function initialize() {
   // Canvas
   canvas = document.querySelector('canvas');
   canvasWidth = container.clientWidth;
-  canvasHeight = canvasWidth * 0.7;
+  canvasHeight = canvasWidth * 0.5;
   canvas.width = canvasWidth - padding.left - padding.right;
   canvas.height = canvasHeight;
   // context
   context = canvas.getContext('2d');  
-<<<<<<< HEAD
   draw();
-=======
-  prepareDrawingArea();
->>>>>>> 782923b4359cd4de4b68eb68a0b64252a3d5c1e2
   // Fire Mouse and Drag events
   drawingBoardEvents();
 
