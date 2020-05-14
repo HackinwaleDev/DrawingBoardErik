@@ -310,6 +310,9 @@ function draw() {
     context.lineTo(pointX[i], pointY[i]);
     context.strokeStyle = pointColors[i];
     context.shadowColor = pointColors[i];
+    context.shadowOffsetX = 0;
+    context.shadowOffsetY = 0;
+    context.shadowBlur = 1;
     context.lineCap = 'round';
     context.lineJoin = 'round';
     context.lineWidth = radius;
