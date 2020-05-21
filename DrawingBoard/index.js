@@ -351,13 +351,17 @@ function addPoint(x, y, isDrag) {
 
 // Drawing Board events
 function  drawingBoardEvents() {
-  // Create events
+  /**======================================================================
+   * Quick Update: Currently all events only work on PC browser therefore 
+   * there is need to allow support for Mobile devices browser by implementing
+   * the following touch events - touchstart, touchmove, touchend and touchcancel.
+   */
   let press = (e)=>{
     // Get the coordinates and store to points array
     // Store up the coordinates to point
     // Call the draw function and pass the points
-    let mouseX = e.pageX - container.offsetLeft - 15,
-        mouseY = e.pageY - container.offsetTop;
+    let mouseX = (e.changedTouches ? e.changedTouches[0].pageX : e.pageX) - container.offsetLeft - 15,
+        mouseY = (e.changedTouches ? e.changedTouches[0].pageY : e.pageY) - container.offsetTop;
 
     /** There is a need to handle when the user press either sides of the
      * drawing area where we shall be positioning the drawing tools.
@@ -442,8 +446,8 @@ function  drawingBoardEvents() {
     draw();
   }, 
   drag = (e)=>{
-    let mouseX = e.pageX - container.offsetLeft -15,
-        mouseY = e.pageY - container.offsetTop;
+    let mouseX = (e.changedTouches ? e.changedTouches[0].pageX : e.pageX) - container.offsetLeft -15,
+        mouseY = (e.changedTouches ? e.changedTouches[0].pageY : e.pageY) - container.offsetTop;
     if(isPaint){
       addPoint(mouseX, mouseY, true);
       draw();
@@ -458,11 +462,17 @@ function  drawingBoardEvents() {
     isPaint = false;
   };
 
-  // Register the events
+  // Register the events (for PC Browsers only)
   canvas.addEventListener('mousedown', press, false);
   canvas.addEventListener('mousemove', drag, false);
   canvas.addEventListener('mouseup', release, false);
   canvas.addEventListener('mouseout', cancel, false);
+
+  // Register the events for Mobile device Browsers
+  canvas.addEventListener('touchstart', press, false);
+  canvas.addEventListener('touchmove', drag, false);
+  canvas.addEventListener('touchend', release, false);
+  canvas.addEventListener('touchcancel', cancel, false);
 }
 // Prepare the drawing board
 function initialize() {
