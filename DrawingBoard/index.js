@@ -25,6 +25,13 @@ let container,
     markerToolY,
     markerToolWidth,
     markerToolHeight,
+    undoX,
+    saveX,
+    undoButton = new Image(),
+    saveButton = new Image(),
+    iconPressed,
+    countIcon = 0,
+    totalIcons = 2,
     toolsStrokeStyle = 'grey',
     pointSize = 'normal',
     pointColor = 'black',
@@ -77,7 +84,7 @@ function drawingTools(){
     colorPalleteHeight = canvasHeight - colorPalleteY;
     context.beginPath();
     context.lineWidth = 1;
-    context.rect(colorPalleteX, colorPalleteY, colorPalleteWidth, colorPalleteHeight);
+    context.rect(colorPalleteX, colorPalleteY, colorPalleteWidth, colorPalleteHeight-1);
     context.stroke();
 
     // Draw the circles to indicate the colors 
@@ -163,9 +170,25 @@ function drawingTools(){
     context.closePath()
     context.fillStyle = pointTool === 'marker'? 'black' : toolsStrokeStyle;
     context.fill()
+  },
+
+  drawUndoButton = () => {
+    undoX = drawingAreaX*2;    
+    context.drawImage(undoButton, // icon
+      undoX, colorPalleteY, // x,y
+      colorPalleteHeight, colorPalleteHeight); // width, height  
+  },
+
+  drawSaveButton = () => {
+    saveX = drawingAreaWidth-colorPalleteHeight;
+    context.drawImage(saveButton, 
+      saveX, colorPalleteY, 
+      colorPalleteHeight, colorPalleteHeight);
   }
 
   drawColorPallete();
+  drawUndoButton();
+  drawSaveButton();
   drawSizeSelector();
   drawEraserPicker();
   drawMarkerTool();
@@ -227,6 +250,7 @@ function prepareDrawingArea() {
   drawingAreaY = canvasHeight*.1;
   drawingAreaWidth = canvasWidth*.75;
   drawingAreaHeight = canvasHeight*.8;
+
   drawingTools();
   if(pointTool === 'marker'){ 
     drawMarker();
@@ -398,6 +422,7 @@ function  drawingBoardEvents() {
       }
 
     } else if (mouseY > drawingAreaY + drawingAreaHeight) { // Bottom side of the drawing area
+      // selection algo for the color pallete
       if(mouseX > colorPalleteX && pointTool === 'marker'){
         let colorWidth = colorPalleteWidth/12;
         if (mouseX < colorPalleteX + colorWidth) {
@@ -438,6 +463,24 @@ function  drawingBoardEvents() {
           console.log('twelveth color')
         } 
       }
+      // selection algo for Undo and Save function
+      if (mouseX > undoX && mouseX < undoX+colorPalleteHeight) {
+        iconPressed = 'undo';
+        /* The trick is to remove the last 50 points from the point array (-_^) */
+        console.log(pointY.length)
+        for (let i = 0; i < 50; i++) {
+          pointX.pop();
+          pointY.pop();
+          pointSizes.pop();
+          pointColors.pop();
+          isPointDrag.pop();          
+        }
+        console.log(pointY.length)
+      }
+      if (mouseX > saveX && mouseX < saveX + colorPalleteHeight) {
+        iconPressed = 'save';
+      }
+
     }
 
     //=======================================================================
@@ -474,6 +517,15 @@ function  drawingBoardEvents() {
   canvas.addEventListener('touchend', release, false);
   canvas.addEventListener('touchcancel', cancel, false);
 }
+
+// Check if the icons are loaded before drawing on the canvas
+function iconsLoaded() {
+  countIcon++;
+  if (countIcon === totalIcons) {    
+    draw();
+    drawingBoardEvents();
+  }
+}
 // Prepare the drawing board
 function initialize() {
   // container
@@ -486,10 +538,20 @@ function initialize() {
   canvas.width = canvasWidth - padding.left - padding.right;
   canvas.height = canvasHeight;
   // context
-  context = canvas.getContext('2d');  
-  draw();
+  context = canvas.getContext('2d'); 
+  
+  // Load the icons to be used for undo and save
+  undoButton.onload = iconsLoaded;
+  undoButton.src = "/asset/icons/undo64.png";
+  saveButton.onload = iconsLoaded;
+  saveButton.src = "/asset/icons/save64.png";
+
+  /** The `draw` and `drawingBoardEvents` functions are now moved
+   * to iconsLoaded event function to avoid multiple instances call
+    */
+  // draw();
   // Fire Mouse and Drag events
-  drawingBoardEvents();
+  // drawingBoardEvents();
 
 }
 
