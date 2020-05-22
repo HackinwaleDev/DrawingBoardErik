@@ -374,6 +374,12 @@ function addPoint(x, y, isDrag) {
   isPointDrag.push(isDrag);  
 }
 
+function deleteImage(){
+  document.querySelector('p').remove();
+  document.querySelector('img').remove();
+  document.querySelector('button').remove();
+}
+
 // Drawing Board events
 function  drawingBoardEvents() {
   /**======================================================================
@@ -499,14 +505,13 @@ function  drawingBoardEvents() {
          */
         let newCanvas, newContext, 
             canvasImage, imageElement,
-            tooltip, downloadLinkElement;
+            tooltip, deleteElement, downloadLinkElement;
         
         // Create new canvas
         newCanvas = document.createElement('canvas');
         newCanvas.style.display = 'none';
         newCanvas.width = drawingAreaWidth;
         newCanvas.height = drawingAreaHeight;
-        document.getElementById('container').appendChild(newCanvas);
         newContext = newCanvas.getContext('2d');
 
         // Draw image to clip area to download
@@ -515,32 +520,42 @@ function  drawingBoardEvents() {
           drawingAreaWidth, drawingAreaHeight, // Clipping width and height
           0, 0, // Starting position of the clipped
           newCanvas.width, newCanvas.height);
+        newContext.strokeRect(0,0,newCanvas.width, newCanvas.height); // Border
 
         canvasImage = newCanvas.toDataURL(); // Image file
 
         // Configure Image element to display the image
         if(document.querySelector('img')){
-          // document.querySelector('p').remove();
-          document.querySelector('a').remove();
+          document.querySelector('p').remove();
+          // document.querySelector('a').remove();
           document.querySelector('img').remove();
+          document.querySelector('button').remove();
+          
         }   
 
         /* Create a download link */
+/*        
         downloadLinkElement = document.createElement('a');
         downloadLinkElement.setAttribute('download', 'my-dope-drawing.png');
         downloadLinkElement.innerHTML = "Download the preview!";
         downloadLinkElement.setAttribute('href', canvasImage);
 
+*/
         imageElement = document.createElement('img');
         imageElement.src = canvasImage;
         tooltip = document.createElement('p');
         tooltip.textContent = "Right-click and Save";
+        deleteElement = document.createElement('button');
+        deleteElement.textContent = "Delete";
 
-
-        // document.getElementById('container').appendChild(tooltip);        
-        document.getElementById('container-1').appendChild(downloadLinkElement);
+        document.getElementById('container').appendChild(newCanvas);
+        document.getElementById('container-1').appendChild(tooltip);        
+        // document.getElementById('container-1').appendChild(downloadLinkElement);
         document.getElementById('container-1').appendChild(imageElement);
+        document.getElementById('container-1').appendChild(deleteElement);
 
+        deleteElement.addEventListener('click', deleteImage, false);
+        
       }
 
     }
@@ -585,6 +600,7 @@ function  drawingBoardEvents() {
   canvas.addEventListener('touchmove', drag, false);
   canvas.addEventListener('touchend', release, false);
   canvas.addEventListener('touchcancel', cancel, false);
+
 }
 
 // Check if the icons are loaded before drawing on the canvas
