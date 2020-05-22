@@ -479,6 +479,35 @@ function  drawingBoardEvents() {
       }
       if (mouseX > saveX && mouseX < saveX + colorPalleteHeight) {
         iconPressed = 'save';
+        /** The trick will be to create a new canvas and set its
+         * width and height to be the region clipped on the old canvas
+         * then convert to image.
+         */
+        let newCanvas, newContext, canvasImage, imageElement;
+        
+        // Create new canvas
+        newCanvas = document.createElement('canvas');
+        newCanvas.style.display = 'none';
+        newCanvas.width = drawingAreaWidth;
+        newCanvas.height = drawingAreaHeight;
+        document.getElementById('container').appendChild(newCanvas);
+        newContext = newCanvas.getContext('2d');
+
+        // Draw image to clip area to download
+        newContext.drawImage(canvas,
+          drawingAreaX, drawingAreaY, // clipping start X,Y
+          drawingAreaWidth, drawingAreaHeight, // Clipping width and height
+          0, 0, // Starting position of the clipped
+          newCanvas.width, newCanvas.height);
+
+        canvasImage = newCanvas.toDataURL(); // Image file
+
+        // Image element to display the image
+        if(document.querySelector('img'))
+          document.querySelector('img').remove();
+        imageElement = document.createElement('img');
+        imageElement.src = canvasImage;
+        document.getElementById('container').appendChild(imageElement);             
       }
 
     }
@@ -542,9 +571,9 @@ function initialize() {
   
   // Load the icons to be used for undo and save
   undoButton.onload = iconsLoaded;
-  undoButton.src = "/asset/icons/undo64.png";
+  undoButton.src = "./asset/icons/undo64.png";
   saveButton.onload = iconsLoaded;
-  saveButton.src = "/asset/icons/save64.png";
+  saveButton.src = "./asset/icons/save64.png";
 
   /** The `draw` and `drawingBoardEvents` functions are now moved
    * to iconsLoaded event function to avoid multiple instances call
