@@ -409,11 +409,9 @@ function  drawingBoardEvents() {
       if(mouseY > markerToolY && mouseY < markerToolY+markerToolHeight){
         pointTool = 'marker';
         pointColor = 'black';
-        console.log('Marker selected');
       } else if(mouseY > eraserPickerY && mouseY < eraserPickerY + eraserPickerHeight){
         pointTool = 'eraser';
         pointColor = 'white';
-        console.log('Eraser selected')
       } else if(mouseY > sizeSelectorY){
         if (mouseY < sizeSelectorY + calcPensizeMidpoint(penSize.small)) {
           pointSize = 'small';
@@ -434,40 +432,28 @@ function  drawingBoardEvents() {
         let colorWidth = colorPalleteWidth/12;
         if (mouseX < colorPalleteX + colorWidth) {
           pointColor = colors.red;
-          console.log('first color');
         } else if (mouseX < colorPalleteX + colorWidth*2) {
           pointColor = colors.pink;
-          console.log('second color')
         } else if (mouseX < colorPalleteX + colorWidth*3) {
           pointColor = colors.orange;
-          console.log('third color')
         } else if (mouseX < colorPalleteX + colorWidth*4) {
           pointColor = colors.yellow;
-          console.log('fourth color')
         } else if (mouseX < colorPalleteX + colorWidth*5) {
           pointColor = colors.green;
-          console.log('fifth color')
         } else if (mouseX < colorPalleteX + colorWidth*6) {
           pointColor = colors.blue;
-          console.log('sixth color')
         } else if (mouseX < colorPalleteX + colorWidth*7) {
           pointColor = colors.purple;
-          console.log('seventh color')
         } else if (mouseX < colorPalleteX + colorWidth*8) {
           pointColor = colors.brown;
-          console.log('eighth color')
         } else if (mouseX < colorPalleteX + colorWidth*9) {
           pointColor = colors.indigo;
-          console.log('nineth color')
         } else if (mouseX < colorPalleteX + colorWidth*10) {
           pointColor = colors.violet;
-          console.log('tenth color')
         } else if (mouseX < colorPalleteX + colorWidth*11) {
           pointColor = colors.gray;
-          console.log('eleventh color')
         } else if (mouseX < colorPalleteX + colorWidth*12) {
           pointColor = colors.black;
-          console.log('twelveth color')
         } 
       }
       // selection algo for Undo and Save function
@@ -530,7 +516,7 @@ function  drawingBoardEvents() {
           // document.querySelector('a').remove();
           document.querySelector('img').remove();
           document.querySelector('button').remove();
-          
+
         }   
 
         /* Create a download link */
@@ -576,10 +562,8 @@ function  drawingBoardEvents() {
   }, 
   release = (e)=>{
     let undoSteps = pointX.length - pointCounterStack[pointCounterStack.length-1];
-    console.log("undosteps",undoSteps)
     if(undoSteps > 1)
       pointCounterStack.push(undoSteps);
-    console.log("pointcounterstack",pointCounterStack);
 
 
     isPaint = false;
