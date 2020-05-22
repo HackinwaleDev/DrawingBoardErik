@@ -42,6 +42,7 @@ let pointX = [],
     pointSizes = [],
     pointColors = [],
     isPointDrag = [],
+    pointCounterStack = [0], // To enhance the Undo functionality
     isPaint = false;
 
 const penSize = {small: 2, normal: 5, medium: 8, big: 10, large: 12},
@@ -467,7 +468,7 @@ function  drawingBoardEvents() {
       if (mouseX > undoX && mouseX < undoX+colorPalleteHeight) {
         iconPressed = 'undo';
         /* The trick is to remove the last 50 points from the point array (-_^) */
-        console.log(pointY.length)
+
         for (let i = 0; i < 50; i++) {
           pointX.pop();
           pointY.pop();
@@ -475,15 +476,30 @@ function  drawingBoardEvents() {
           pointColors.pop();
           isPointDrag.pop();          
         }
-        console.log(pointY.length)
+
+/*        // testing a better approach
+        let countStep = pointCounterStack.pop();
+        console.log("pointCounterStack", countStep);
+        for(let i = 0; i < countStep; i++){
+          pointX.pop();
+          pointY.pop();
+          pointSizes.pop();
+          pointColors.pop();
+          isPointDrag.pop(); 
+          console.log("pointCounterStack length", pointCounterStack.length)
+        }
+*/        
       }
+
       if (mouseX > saveX && mouseX < saveX + colorPalleteHeight) {
         iconPressed = 'save';
         /** The trick will be to create a new canvas and set its
          * width and height to be the region clipped on the old canvas
          * then convert to image.
          */
-        let newCanvas, newContext, canvasImage, imageElement, tooltip;
+        let newCanvas, newContext, 
+            canvasImage, imageElement,
+            tooltip, downloadLinkElement;
         
         // Create new canvas
         newCanvas = document.createElement('canvas');
@@ -502,18 +518,29 @@ function  drawingBoardEvents() {
 
         canvasImage = newCanvas.toDataURL(); // Image file
 
-        // Image element to display the image
+        // Configure Image element to display the image
         if(document.querySelector('img')){
-          document.querySelector('p').remove();
+          // document.querySelector('p').remove();
+          document.querySelector('a').remove();
           document.querySelector('img').remove();
-        }
-        
+        }   
+
+        /* Create a download link */
+        downloadLinkElement = document.createElement('a');
+        downloadLinkElement.setAttribute('download', 'my-dope-drawing.png');
+        downloadLinkElement.innerHTML = "Download the preview!";
+        downloadLinkElement.setAttribute('href', canvasImage);
+
         imageElement = document.createElement('img');
         imageElement.src = canvasImage;
         tooltip = document.createElement('p');
         tooltip.textContent = "Right-click and Save";
-        document.getElementById('container').appendChild(tooltip);
-        document.getElementById('container').appendChild(imageElement);             
+
+
+        // document.getElementById('container').appendChild(tooltip);        
+        document.getElementById('container-1').appendChild(downloadLinkElement);
+        document.getElementById('container-1').appendChild(imageElement);
+
       }
 
     }
@@ -533,6 +560,13 @@ function  drawingBoardEvents() {
     e.preventDefault();
   }, 
   release = (e)=>{
+    let undoSteps = pointX.length - pointCounterStack[pointCounterStack.length-1];
+    console.log("undosteps",undoSteps)
+    if(undoSteps > 1)
+      pointCounterStack.push(undoSteps);
+    console.log("pointcounterstack",pointCounterStack);
+
+
     isPaint = false;
     draw();
   }, 
