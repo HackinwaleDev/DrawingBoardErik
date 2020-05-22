@@ -483,7 +483,7 @@ function  drawingBoardEvents() {
          * width and height to be the region clipped on the old canvas
          * then convert to image.
          */
-        let newCanvas, newContext, canvasImage, imageElement;
+        let newCanvas, newContext, canvasImage, imageElement, tooltip;
         
         // Create new canvas
         newCanvas = document.createElement('canvas');
@@ -503,10 +503,16 @@ function  drawingBoardEvents() {
         canvasImage = newCanvas.toDataURL(); // Image file
 
         // Image element to display the image
-        if(document.querySelector('img'))
+        if(document.querySelector('img')){
+          document.querySelector('p').remove();
           document.querySelector('img').remove();
+        }
+        
         imageElement = document.createElement('img');
         imageElement.src = canvasImage;
+        tooltip = document.createElement('p');
+        tooltip.textContent = "Right-click and Save";
+        document.getElementById('container').appendChild(tooltip);
         document.getElementById('container').appendChild(imageElement);             
       }
 
